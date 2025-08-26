@@ -5,10 +5,10 @@ namespace src.Domain.Model
     public class Notebook : IRecurso
     {
         public long Id { get; set; }
-
         // Data de aquisicao do notebook
         public required DateTime DAquisicao { get; set; }
+        public required string Descricao { get; set; } 
+        public List<Funcionario> Funcionarios { get; set; } = new List<Funcionario>();
         
-        public required string Descricao{ get; set; } 
     }
 }
