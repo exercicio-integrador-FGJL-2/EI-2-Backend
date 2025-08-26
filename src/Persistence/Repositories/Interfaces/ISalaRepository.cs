@@ -1,9 +1,10 @@
 using src.Domain.Model;
+
 namespace src.Persistence.Repositories.Interfaces
 {
-    public interface ISalaRepository
+    public interface ISalaRepository : IGenericRepository<Sala>
     {
-        public Task<Sala> GetByIdAsync(long id);
-        public Task<bool> UpdateSalaAsync(Sala s);
+        Task<Sala?> GetByNumeroAsync(int numero, CancellationToken ct = default);
+        Task<bool> NumeroExistsAsync(int numero, long? exceptId = null, CancellationToken ct = default);
     }
 }
