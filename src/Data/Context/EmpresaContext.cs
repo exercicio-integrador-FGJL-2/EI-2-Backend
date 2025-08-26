@@ -25,7 +25,4 @@ public class EmpresaContext : DbContext
         modelBuilder.Entity<Recurso>()
         .ToTable("Recurso");
     }
-
-
-
 }
