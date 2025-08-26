@@ -1,14 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 using src.Domain.Model.Interface;
 
 namespace src.Domain.Model
 {
-    public class Notebook : IRecurso
+    public class Notebook : Recurso
     {
-        public long Id { get; set; }
         // Data de aquisicao do notebook
         public required DateTime DAquisicao { get; set; }
+        [MaxLength(200)]
         public required string Descricao { get; set; } 
-        public List<Funcionario> Funcionarios { get; set; } = new List<Funcionario>();
         
     }
 }
