@@ -2,7 +2,7 @@ using src.Domain.Model.Interface;
 
 namespace src.Domain.Model
 {
-    public class Notebook : Recurso
+    public class Notebook : IRecurso
     {
         public long Id { get; set; }
 

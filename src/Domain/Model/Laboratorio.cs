@@ -2,7 +2,7 @@ using src.Domain.Model.Interface;
 
 namespace src.Domain.Model
 {
-    public class Laboratorio : Recurso
+    public class Laboratorio : IRecurso
     {
         public long Id { get; set; }
 

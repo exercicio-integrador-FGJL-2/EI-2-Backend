@@ -2,7 +2,7 @@ using src.Domain.Model.Interface;
 
 namespace src.Domain.Model
 {
-    public class Sala : Recurso
+    public class Sala : IRecurso
     {
         public long Id { get; set; }
         public required int Numero{ get; set; }
