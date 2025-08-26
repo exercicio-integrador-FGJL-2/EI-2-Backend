@@ -5,8 +5,7 @@ namespace src.Domain.Model
 {
     public class Sala : Recurso
     {
-        [Required]
-        public required int Numero { get; set; }
+        public required int Numero{ get; set; }
         public required int Lugares { get; set; }
         public required bool TemProjetor { get; set; }
 
