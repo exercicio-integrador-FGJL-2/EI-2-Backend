@@ -4,12 +4,38 @@ using src.Persistence.Repositories.Interfaces;
 
 namespace src.Persistence.Repositories;
 
-public class NotebookRepository : GenericRepository<Notebook>, INotebookRepository
+public class NotebookRepository : INotebookRepository
 {
-    private readonly AppDbContext _app;
+    private readonly EmpresaContext _empresaContext;
 
-    public NotebookRepository(AppDbContext ctx) : base(ctx) => _app = ctx;
+    public NotebookRepository(EmpresaContext empresaContext)
+    {
+        _empresaContext = empresaContext;
+    }
+    public async Task<IEnumerable<Notebook>> GetAllAsync()
+    {
+        return await _empresaContext.Notebooks.ToListAsync();
+    }
 
-    public Task<Notebook?> GetByPatrimonioAsync(string patrimonio, CancellationToken ct = default)
-        => _app.Notebooks.AsNoTracking().FirstOrDefaultAsync(n => n.NroPatrimonio == patrimonio, ct);
+    public Task<Notebook?> GetByIdAsync(long id)
+    {
+        return _empresaContext.Notebooks.FindAsync(id).AsTask();
+    }
+
+    public async Task SaveAsync(Notebook notebook)
+    {
+        await _empresaContext.AddAsync(notebook);
+        await _empresaContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Notebook notebook)
+    {
+        _empresaContext.Update(notebook);
+        await _empresaContext.SaveChangesAsync();
+    }
+    public async Task DeleteAsync(Notebook notebook)
+    {
+        _empresaContext.Remove(notebook);
+        await _empresaContext.SaveChangesAsync();
+    }
 }

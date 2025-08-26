@@ -2,8 +2,9 @@ using src.Domain.Model;
 
 namespace src.Persistence.Repositories.Interfaces;
 
-public interface ILaboratorioRepository : IGenericRepository<Laboratorio>
+public interface ILaboratorioRepository
 {
-    // Exemplo: buscar por nome
-    Task<Laboratorio?> GetByNomeAsync(string nome, CancellationToken ct = default);
+    Task<Laboratorio?> GetByIdAsync(long id);
+    Task<IEnumerable<Laboratorio>> GetAllAsync();
+    Task UpdateAsync(Laboratorio lab);
 }

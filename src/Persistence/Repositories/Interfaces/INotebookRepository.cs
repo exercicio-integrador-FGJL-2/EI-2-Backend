@@ -2,8 +2,11 @@ using src.Domain.Model;
 
 namespace src.Persistence.Repositories.Interfaces;
 
-public interface INotebookRepository : IGenericRepository<Notebook>
+public interface INotebookRepository
 {
-    // Exemplo: buscar por patrimônio
-    Task<Notebook?> GetByPatrimonioAsync(string patrimonio, CancellationToken ct = default);
+    Task<Notebook?> GetByIdAsync(long id);
+    Task<IEnumerable<Notebook>> GetAllAsync();
+    Task SaveAsync(Notebook notebook);
+    Task UpdateAsync(Notebook notebook);
+    Task DeleteAsync(Notebook notebook);
 }
