@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace src.Migrations
 {
     [DbContext(typeof(EmpresaContext))]
-    partial class EmpresaContextModelSnapshot : ModelSnapshot
+    [Migration("20250826163722_RelacoesFuncionariosRecursos")]
+    partial class RelacoesFuncionariosRecursos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,11 +73,18 @@ namespace src.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Recurso", (string)null);
+                    b.ToTable("Recurso");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator().HasValue("Recurso");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("src.Domain.Model.Laboratorio", b =>
@@ -92,7 +102,7 @@ namespace src.Migrations
                     b.Property<int>("QComp")
                         .HasColumnType("int");
 
-                    b.ToTable("Laboratorio", (string)null);
+                    b.HasDiscriminator().HasValue("Laboratorio");
                 });
 
             modelBuilder.Entity("src.Domain.Model.Notebook", b =>
@@ -106,7 +116,13 @@ namespace src.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Notebooks");
+                    b.ToTable("Recurso", t =>
+                        {
+                            t.Property("Descricao")
+                                .HasColumnName("Notebook_Descricao");
+                        });
+
+                    b.HasDiscriminator().HasValue("Notebook");
                 });
 
             modelBuilder.Entity("src.Domain.Model.Sala", b =>
@@ -122,7 +138,7 @@ namespace src.Migrations
                     b.Property<bool>("TemProjetor")
                         .HasColumnType("bit");
 
-                    b.ToTable("Sala", (string)null);
+                    b.HasDiscriminator().HasValue("Sala");
                 });
 
             modelBuilder.Entity("FuncionarioRecurso", b =>
@@ -136,33 +152,6 @@ namespace src.Migrations
                     b.HasOne("src.Domain.Model.Interface.Recurso", null)
                         .WithMany()
                         .HasForeignKey("RecursosAlocadosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("src.Domain.Model.Laboratorio", b =>
-                {
-                    b.HasOne("src.Domain.Model.Interface.Recurso", null)
-                        .WithOne()
-                        .HasForeignKey("src.Domain.Model.Laboratorio", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("src.Domain.Model.Notebook", b =>
-                {
-                    b.HasOne("src.Domain.Model.Interface.Recurso", null)
-                        .WithOne()
-                        .HasForeignKey("src.Domain.Model.Notebook", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("src.Domain.Model.Sala", b =>
-                {
-                    b.HasOne("src.Domain.Model.Interface.Recurso", null)
-                        .WithOne()
-                        .HasForeignKey("src.Domain.Model.Sala", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

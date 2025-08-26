@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using src.Domain.Model;
+using src.Domain.Model.Interface;
 
 public class EmpresaContext : DbContext
 {
@@ -10,7 +11,19 @@ public class EmpresaContext : DbContext
 
     public EmpresaContext(DbContextOptions options) : base(options)
     {
-            
+
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Recurso>()
+        .ToTable("Recurso");
+        modelBuilder.Entity<Laboratorio>()
+        .ToTable("Laboratorio");
+        modelBuilder.Entity<Sala>()
+        .ToTable("Sala");
+        modelBuilder.Entity<Recurso>()
+        .ToTable("Recurso");
     }
 
 

@@ -10,6 +10,6 @@ namespace src.Domain.Model
         public string? Cargo { get; set; }
         //Data de admissao do funcionario
         public required DateTime DAdmissao { get; set; }
-        public List<IRecurso> RecursosAlocados { get; set; } = new List<IRecurso>();
+        public List<Recurso> RecursosAlocados { get; set; } = new List<Recurso>();
     }
 }
