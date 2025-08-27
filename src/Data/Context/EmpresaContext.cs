@@ -12,7 +12,7 @@ public class EmpresaContext : DbContext
 
     public EmpresaContext(DbContextOptions options) : base(options)
     {
-
+       
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,7 +25,5 @@ public class EmpresaContext : DbContext
         .ToTable("Sala");
         modelBuilder.Entity<Recurso>()
         .ToTable("Recurso");
-        modelBuilder.Entity<RecursoFuncionario>()
-        .ToTable("FuncionarioRecurso");
     }
 }

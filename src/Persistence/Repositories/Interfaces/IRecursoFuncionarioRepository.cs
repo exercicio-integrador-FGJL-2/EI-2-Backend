@@ -6,8 +6,10 @@ namespace src.Persistence.Repositories.Interfaces
     public interface IRecursoFuncionarioRepository
     {
         Task<List<RecursoFuncionario>> GetAllGroupedByDateAsync(); //group by date
-        Task<int?> GetAlocacoesPorRecurso(Recurso r);
+        Task<int> GetAlocacoesPorRecurso(Recurso r);
         Task<List<RecursoFuncionario>> GetByDateAsync(DateTime start, DateTime end);
+        Task AlocarAsync(RecursoFuncionario recursoFuncionario);
+
 
     }
 }

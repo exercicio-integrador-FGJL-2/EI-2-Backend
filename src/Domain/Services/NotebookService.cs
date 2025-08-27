@@ -33,8 +33,7 @@ namespace src.Domain.Services
         public async Task<IEnumerable<NotebookResponseDto>> GetAllNotebooks()
         {
             var notebooks = await _notebookRepository.GetAllAsync();
-            return notebooks.Select(n => new NotebookResponseDto (n.Id, n.NroPatrimonio, n.DAquisicao, n.Descricao,
-                                                            n.Funcionarios.Select(f => new FuncionarioDto(f.Matricula, f.Nome)).ToList()));
+            return notebooks.Select(n => new NotebookResponseDto (n.Id, n.NroPatrimonio, n.DAquisicao, n.Descricao));
         }
 
         public async Task<NotebookResponseDto?> GetNotebookById(long id)
@@ -44,8 +43,7 @@ namespace src.Domain.Services
             {
                 throw new NullReferenceException();
             }
-            return new NotebookResponseDto(note.Id, note.NroPatrimonio, note.DAquisicao, note.Descricao,
-                                            note.Funcionarios.Select(f => new FuncionarioDto(f.Matricula, f.Nome)).ToList());
+            return new NotebookResponseDto(note.Id, note.NroPatrimonio, note.DAquisicao, note.Descricao);
 
         }
     }
