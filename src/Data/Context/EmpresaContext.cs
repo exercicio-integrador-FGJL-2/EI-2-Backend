@@ -8,6 +8,7 @@ public class EmpresaContext : DbContext
     public DbSet<Laboratorio> Laboratorios { get; set; }
     public DbSet<Notebook> Notebooks { get; set; }
     public DbSet<Funcionario> Funcionarios { get; set; }
+    public DbSet<RecursoFuncionario> RecursoFuncionarios { get; set; }
 
     public EmpresaContext(DbContextOptions options) : base(options)
     {
@@ -24,5 +25,7 @@ public class EmpresaContext : DbContext
         .ToTable("Sala");
         modelBuilder.Entity<Recurso>()
         .ToTable("Recurso");
+        modelBuilder.Entity<RecursoFuncionario>()
+        .ToTable("FuncionarioRecurso");
     }
 }
