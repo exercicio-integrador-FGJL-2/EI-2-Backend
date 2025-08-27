@@ -33,9 +33,9 @@ public class NotebookRepository : INotebookRepository
         _empresaContext.Update(notebook);
         await _empresaContext.SaveChangesAsync();
     }
-    public async Task DeleteAsync(Notebook notebook)
+    public async Task DeleteAsync(Notebook n)
     {
-        _empresaContext.Remove(notebook);
+        _empresaContext.Notebooks.Remove(n);
         await _empresaContext.SaveChangesAsync();
     }
 }
