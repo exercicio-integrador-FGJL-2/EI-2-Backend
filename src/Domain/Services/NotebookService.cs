@@ -30,21 +30,26 @@ namespace src.Domain.Services
             await _notebookRepository.DeleteAsync(notebook);
         }
 
-        public async Task<IEnumerable<NotebookResponseDto>> GetAllNotebooks()
+        public async Task<IEnumerable<NotebookDto>> GetAllNotebooks()
         {
             var notebooks = await _notebookRepository.GetAllAsync();
-            return notebooks.Select(n => new NotebookResponseDto (n.Id, n.NroPatrimonio, n.DAquisicao, n.Descricao));
+            return notebooks.Select(n => new NotebookDto (n.Id, n.NroPatrimonio, n.DAquisicao, n.Descricao));
         }
 
-        public async Task<NotebookResponseDto?> GetNotebookById(long id)
+        public async Task<NotebookDto?> GetNotebookById(long id)
         {
             var note = await _notebookRepository.GetByIdAsync(id);
             if (note == null)
             {
                 throw new NullReferenceException();
             }
-            return new NotebookResponseDto(note.Id, note.NroPatrimonio, note.DAquisicao, note.Descricao);
+            return new NotebookDto(note.Id, note.NroPatrimonio, note.DAquisicao, note.Descricao);
 
+        }
+
+        public async Task UpdateNotebook(NotebookDto dto)
+        {
+            await _notebookRepository.UpdateAsync(new Notebook { Id = dto.Id, NroPatrimonio = dto.NroPatrimonio, DAquisicao = dto.DataAquisicao, Descricao = dto.Descricao });
         }
     }
 }
