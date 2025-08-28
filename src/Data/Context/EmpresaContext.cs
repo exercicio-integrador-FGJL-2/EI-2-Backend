@@ -30,6 +30,20 @@ public class EmpresaContext : DbContext
         modelBuilder.Entity<RecursoFuncionario>()
         .Property<long>("RecursoId");
 
+        modelBuilder.Entity<RecursoFuncionario>()
+        .HasKey(rf => new { rf.DataDeAlocacao, rf.FuncionarioId, rf.RecursoId });
+
+        modelBuilder.Entity<RecursoFuncionario>()
+        .HasOne(rf => rf.Funcionario)
+        .WithMany(f => f.RecursoFuncionarios)
+        .HasForeignKey(rf => rf.FuncionarioId);
+
+        modelBuilder.Entity<RecursoFuncionario>()
+        .HasOne(rf => rf.Recurso)
+        .WithMany(r => r.RecursoFuncionarios)
+        .HasForeignKey(rf => rf.RecursoId);
+
+
         modelBuilder.Entity<Funcionario>().HasData(
             new Funcionario { Id = 1, Matricula = 1234, Nome = "João do pão", Cargo = "Vendedor", DAdmissao = new DateTime(2000, 01, 30) },
             new Funcionario { Id = 2, Matricula = 1235, Nome = "José da Manga", Cargo = "Vendedor", DAdmissao = new DateTime(2000, 01, 30) },

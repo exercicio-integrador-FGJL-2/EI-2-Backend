@@ -21,10 +21,12 @@ namespace src.Persistence.Repositories
         }
         public async Task<List<RecursoFuncionario>> GetAllGroupedByDateAsync()
         {
-          
+
             var recursosFuncionarios = await _empresaContext.RecursoFuncionarios
-                                                 .FromSqlRaw("SELECT dataDeAlocacao, funcionarioid, recursoid from RecursoFuncionarios Group by dataDeAlocacao")
-                                                 .ToListAsync();
+                                                            .Include(rf => rf.Funcionario)
+                                                            .Include(rf =>rf.Recurso)
+                                                            .ToListAsync();
+            
             return recursosFuncionarios;
         }
 
@@ -34,6 +36,8 @@ namespace src.Persistence.Repositories
             var list = await _empresaContext.RecursoFuncionarios
                                 .Include(rf => rf.Recurso)
                                 .ToListAsync();
+            
+            
 
             return list.Count(rf => rf.Recurso.GetType() == tipo);
         }

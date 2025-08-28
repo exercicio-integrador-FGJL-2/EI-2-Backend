@@ -24,15 +24,19 @@ namespace src.Domain.Services
             var rec = _decide.DecideTipo(rfDto.TipoRecursoDto);
             rec.Id = rfDto.IdRecurso;
 
-            await _recursoFuncionarioRepo.AlocarAsync(new RecursoFuncionario { Funcionario = funcionario, Recurso = rec, DataDeAlocacao = rfDto.Data });
+            await _recursoFuncionarioRepo.AlocarAsync(new RecursoFuncionario { FuncionarioId= funcionario.Id , RecursoId = rec.Id, DataDeAlocacao = rfDto.Data });
         }
 
         public async Task<IEnumerable<RecursoFuncionarioDto>> GetAll()
         {
             var rfs = await _recursoFuncionarioRepo.GetAllGroupedByDateAsync();
-            return rfs.Select(rf => new RecursoFuncionarioDto(
-                rf.Funcionario.Id,
-                rf.Recurso.Id,
+            if (rfs == null)
+            {
+                throw new NullReferenceException("Lista esta vazia.");
+            }
+            var listaConvertida = rfs.Select(rf => new RecursoFuncionarioDto(
+                rf.FuncionarioId,
+                rf.RecursoId,
                 rf.DataDeAlocacao,
                 rf.Recurso switch
                 {
@@ -41,6 +45,7 @@ namespace src.Domain.Services
                     Notebook => TipoRecursoDto.Notebook,
                     _ => throw new InvalidOperationException("Tipo de recurso desconhecido")
                 }));
+            return listaConvertida;
         }
 
         public async Task<int> GetAlocoesPorRecurso(RecursoDto recursoDto)

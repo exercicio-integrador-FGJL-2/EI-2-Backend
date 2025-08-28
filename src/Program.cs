@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using src.Domain.Auxiliar.Interface;
 using src.Domain.Services;
@@ -17,11 +18,27 @@ public class Program
         // Add services to the container.
         builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
         builder.Services.AddScoped<IFuncionarioRepository, FuncionarioRepository>();
+
+        builder.Services.AddScoped<ILaboratorioService, LaboratorioService>();
+        builder.Services.AddScoped<ILaboratorioRepository, LaboratorioRepository>();
+
+        builder.Services.AddScoped<ISalaService, SalaService>();
+        builder.Services.AddScoped<ISalaRepository, SalaRepository>();
+
+        builder.Services.AddScoped<INotebookService, NotebookService>();
+        builder.Services.AddScoped<INotebookRepository, NotebookRepository>();
+
+        builder.Services.AddScoped<IRecursoFuncionarioService, RecursoFuncionarioService>();
+        builder.Services.AddScoped<IRecursoFuncionarioRepository, RecursoFuncionarioRepository>();
+
+
+
         builder.Services.AddSingleton<IDecide, Decide>();
 
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
+        builder.Services.AddSwaggerGen();
 
         builder.Services.AddDbContext<EmpresaContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -33,6 +50,8 @@ public class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
+            app.UseSwaggerUI();
+            app.UseSwagger();
             app.MapOpenApi();
         }
 
