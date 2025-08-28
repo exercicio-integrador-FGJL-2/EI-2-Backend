@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace src.Migrations
 {
     [DbContext(typeof(EmpresaContext))]
-    [Migration("20250828164734_SeedDataV2")]
-    partial class SeedDataV2
+    [Migration("20250828182727_seedDatav3")]
+    partial class seedDatav3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,21 +23,6 @@ namespace src.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("FuncionarioRecurso", b =>
-                {
-                    b.Property<long>("FuncionariosId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("RecursosAlocadosId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("FuncionariosId", "RecursosAlocadosId");
-
-                    b.HasIndex("RecursosAlocadosId");
-
-                    b.ToTable("FuncionarioRecurso");
-                });
 
             modelBuilder.Entity("src.Domain.Model.Funcionario", b =>
                 {
@@ -118,7 +103,7 @@ namespace src.Migrations
                     b.Property<long>("RecursoId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("DataDeAlocacao");
+                    b.HasKey("DataDeAlocacao", "FuncionarioId", "RecursoId");
 
                     b.HasIndex("FuncionarioId");
 
@@ -213,31 +198,16 @@ namespace src.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FuncionarioRecurso", b =>
-                {
-                    b.HasOne("src.Domain.Model.Funcionario", null)
-                        .WithMany()
-                        .HasForeignKey("FuncionariosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("src.Domain.Model.Interface.Recurso", null)
-                        .WithMany()
-                        .HasForeignKey("RecursosAlocadosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("src.Domain.Model.RecursoFuncionario", b =>
                 {
                     b.HasOne("src.Domain.Model.Funcionario", "Funcionario")
-                        .WithMany()
+                        .WithMany("RecursoFuncionarios")
                         .HasForeignKey("FuncionarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("src.Domain.Model.Interface.Recurso", "Recurso")
-                        .WithMany()
+                        .WithMany("RecursoFuncionarios")
                         .HasForeignKey("RecursoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -272,6 +242,16 @@ namespace src.Migrations
                         .HasForeignKey("src.Domain.Model.Sala", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("src.Domain.Model.Funcionario", b =>
+                {
+                    b.Navigation("RecursoFuncionarios");
+                });
+
+            modelBuilder.Entity("src.Domain.Model.Interface.Recurso", b =>
+                {
+                    b.Navigation("RecursoFuncionarios");
                 });
 #pragma warning restore 612, 618
         }

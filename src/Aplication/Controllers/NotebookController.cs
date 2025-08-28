@@ -18,7 +18,7 @@ public class NotebookController : ControllerBase
     }
 
     // GET /api/notebooks
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<ActionResult<IEnumerable<NotebookDto>>> GetAll()
     {
         var lista = await _service.GetAllNotebooks();

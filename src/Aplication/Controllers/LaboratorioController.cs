@@ -8,10 +8,10 @@ namespace src.Application.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class LaboratoriosController : ControllerBase
+public class LaboratorioController : ControllerBase
 {
     private readonly ILaboratorioService _service;
-    public LaboratoriosController(ILaboratorioService service)
+    public LaboratorioController(ILaboratorioService service)
     {
         _service = service;
     }
@@ -38,7 +38,7 @@ public class LaboratoriosController : ControllerBase
         return Ok(lab);
     }
 
-    [HttpPut("{id:long}")]
+    [HttpPut("update")]
     public async Task<IActionResult> Update([FromBody] LaboratorioDto dto)
     {
         await _service.UpdateLaboratorio(dto);

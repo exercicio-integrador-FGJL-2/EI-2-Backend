@@ -12,7 +12,9 @@ namespace src.Domain.Model
         [Key]
         public required DateTime DataDeAlocacao { get; set; }
 
-            
+        public long FuncionarioId { get; set; }
+        public long RecursoId { get; set; }
+
 
 
     }
