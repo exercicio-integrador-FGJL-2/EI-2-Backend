@@ -13,19 +13,36 @@ namespace src.Persistence.Repositories
             _empresaContext = empresaContext;
         }
 
-        public Task<List<RecursoFuncionario>> GetAllGroupedByDateAsync()
+       
+        public async Task AlocarAsync(RecursoFuncionario recursoFuncionario)
         {
-            throw new NotImplementedException();
+            await _empresaContext.RecursoFuncionarios.AddAsync(recursoFuncionario);
+            await _empresaContext.SaveChangesAsync();
+        }
+        public async Task<List<RecursoFuncionario>> GetAllGroupedByDateAsync()
+        {
+          
+            var recursosFuncionarios = await _empresaContext.RecursoFuncionarios
+                                                 .FromSqlRaw("SELECT dataDeAlocacao, funcionarioid, recursoid from RecursoFuncionarios Group by dataDeAlocacao")
+                                                 .ToListAsync();
+            return recursosFuncionarios;
         }
 
-        public Task<int?> GetAlocacoesPorRecurso(Recurso r)
+        public async Task<int> GetAlocacoesPorRecurso(Recurso r)
         {
-            throw new NotImplementedException();
+            var tipo = r.GetType();
+            var list = await _empresaContext.RecursoFuncionarios
+                                .Include(rf => rf.Recurso)
+                                .ToListAsync();
+
+            return list.Count(rf => rf.Recurso.GetType() == tipo);
         }
 
-        public Task<List<RecursoFuncionario>> GetByDateAsync(DateTime start, DateTime end)
+        public async Task<List<RecursoFuncionario>> GetByDateAsync(DateTime start, DateTime end)
         {
-            throw new NotImplementedException();
+            return await _empresaContext.RecursoFuncionarios
+                                        .Where(rf => rf.DataDeAlocacao >= start && rf.DataDeAlocacao <= end)
+                                        .ToListAsync();
         }
     }
 }

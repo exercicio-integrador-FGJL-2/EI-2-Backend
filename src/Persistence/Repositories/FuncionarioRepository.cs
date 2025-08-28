@@ -15,8 +15,11 @@ namespace src.Persistence.Repositories
         }
         public async Task<List<Funcionario>> GetAllAsync()
         {
-            return await _empresaContext.Funcionarios.ToListAsync();
+            var lista = await _empresaContext.Funcionarios.ToListAsync();
+            
+            return lista;
         }
+
     }
 
 }

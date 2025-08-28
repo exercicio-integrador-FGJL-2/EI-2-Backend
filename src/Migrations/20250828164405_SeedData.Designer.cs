@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace src.Migrations
 {
     [DbContext(typeof(EmpresaContext))]
-    partial class EmpresaContextModelSnapshot : ModelSnapshot
+    [Migration("20250828164405_SeedData")]
+    partial class SeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +70,7 @@ namespace src.Migrations
                         {
                             Id = 1L,
                             Cargo = "Vendedor",
-                            DAdmissao = new DateTime(2000, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DAdmissao = new DateTime(2025, 8, 28, 16, 44, 2, 942, DateTimeKind.Utc).AddTicks(729),
                             Matricula = 1234L,
                             Nome = "João do pão"
                         },
@@ -75,7 +78,7 @@ namespace src.Migrations
                         {
                             Id = 2L,
                             Cargo = "Vendedor",
-                            DAdmissao = new DateTime(2000, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DAdmissao = new DateTime(2025, 8, 28, 16, 44, 2, 942, DateTimeKind.Utc).AddTicks(1350),
                             Matricula = 1235L,
                             Nome = "José da Manga"
                         },
@@ -83,7 +86,7 @@ namespace src.Migrations
                         {
                             Id = 3L,
                             Cargo = "Vendedor",
-                            DAdmissao = new DateTime(2000, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DAdmissao = new DateTime(2025, 8, 28, 16, 44, 2, 942, DateTimeKind.Utc).AddTicks(1355),
                             Matricula = 1236L,
                             Nome = "Maria Madalena"
                         });
@@ -126,7 +129,7 @@ namespace src.Migrations
                     b.HasData(
                         new
                         {
-                            DataDeAlocacao = new DateTime(2025, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataDeAlocacao = new DateTime(2025, 8, 28, 16, 44, 2, 944, DateTimeKind.Utc).AddTicks(8704),
                             FuncionarioId = 1L,
                             RecursoId = 2L
                         });

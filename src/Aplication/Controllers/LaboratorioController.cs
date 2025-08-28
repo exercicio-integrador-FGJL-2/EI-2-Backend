@@ -1,52 +1,47 @@
 using System.Linq; 
 using Microsoft.AspNetCore.Mvc;
 using src.Application.Dtos;
+using src.Domain.Services.Interface;
 using src.Persistence.Repositories.Interfaces;
 
 namespace src.Application.Controllers;
 
 [ApiController]
-[Route("api/labs")]
+[Route("api/[controller]")]
 public class LaboratoriosController : ControllerBase
 {
-    private readonly ILaboratorioRepository _repo;
-    public LaboratoriosController(ILaboratorioRepository repo) => _repo = repo;
+    private readonly ILaboratorioService _service;
+    public LaboratoriosController(ILaboratorioService service)
+    {
+        _service = service;
+    }
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<IActionResult> GetAll()
     {
-        var list = await _repo.GetAllAsync(); 
-        var resp = list.Select(l => new LaboratorioResponseDto(
-            l.Id, l.Nome, l.QtdComputadores, l.ConfigComputadores, l.Descricao
-        ));
-        return Ok(resp);
+        var lista = await _service.GetAllLaboratorios();
+        if (!lista.Any())
+        {
+            return NoContent();
+        }
+        return Ok(lista);
     }
 
     [HttpGet("{id:long}")]
     public async Task<IActionResult> GetById(long id)
     {
-        var l = await _repo.GetByIdAsync(id); 
-        if (l is null) return NotFound();
-        return Ok(new LaboratorioResponseDto(
-            l.Id, l.Nome, l.QtdComputadores, l.ConfigComputadores, l.Descricao
-        ));
+        var lab = await _service.GetLaboratorioById(id);
+        if (lab == null)
+        {
+            return NotFound();
+        }
+        return Ok(lab);
     }
 
     [HttpPut("{id:long}")]
-    public async Task<IActionResult> Update(long id, [FromBody] LaboratorioUpdateDto dto)
+    public async Task<IActionResult> Update([FromBody] LaboratorioDto dto)
     {
-        if (dto is null) return BadRequest();
-
-        var l = await _repo.GetByIdAsync(id); 
-        if (l is null) return NotFound();
-
-        l.Nome = dto.Nome;
-        l.QtdComputadores = dto.QtdComputadores;
-        l.ConfigComputadores = dto.ConfigComputadores;
-        l.Descricao = dto.Descricao;
-
-        _repo.Update(l);
-        await _repo.SaveChangesAsync(); 
-        return NoContent();
+        await _service.UpdateLaboratorio(dto);
+        return Ok();
     }
 }

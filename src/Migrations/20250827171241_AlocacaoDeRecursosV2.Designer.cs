@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace src.Migrations
 {
     [DbContext(typeof(EmpresaContext))]
-    partial class EmpresaContextModelSnapshot : ModelSnapshot
+    [Migration("20250827171241_AlocacaoDeRecursosV2")]
+    partial class AlocacaoDeRecursosV2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,38 +58,13 @@ namespace src.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Funcionarios");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Cargo = "Vendedor",
-                            DAdmissao = new DateTime(2000, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Matricula = 1234L,
-                            Nome = "João do pão"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Cargo = "Vendedor",
-                            DAdmissao = new DateTime(2000, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Matricula = 1235L,
-                            Nome = "José da Manga"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Cargo = "Vendedor",
-                            DAdmissao = new DateTime(2000, 1, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Matricula = 1236L,
-                            Nome = "Maria Madalena"
-                        });
                 });
 
             modelBuilder.Entity("src.Domain.Model.Interface.Recurso", b =>
@@ -122,14 +100,6 @@ namespace src.Migrations
                     b.HasIndex("RecursoId");
 
                     b.ToTable("RecursoFuncionarios");
-
-                    b.HasData(
-                        new
-                        {
-                            DataDeAlocacao = new DateTime(2025, 8, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FuncionarioId = 1L,
-                            RecursoId = 2L
-                        });
                 });
 
             modelBuilder.Entity("src.Domain.Model.Laboratorio", b =>
@@ -137,10 +107,12 @@ namespace src.Migrations
                     b.HasBaseType("src.Domain.Model.Interface.Recurso");
 
                     b.Property<string>("Descricao")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -148,15 +120,6 @@ namespace src.Migrations
                         .HasColumnType("int");
 
                     b.ToTable("Laboratorio", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2L,
-                            Descricao = "Laboratório destinado ao aprendizado de CG",
-                            Nome = "Laboratório de computação gráfica",
-                            QComp = 30
-                        });
                 });
 
             modelBuilder.Entity("src.Domain.Model.Notebook", b =>
@@ -167,6 +130,7 @@ namespace src.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Descricao")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -174,15 +138,6 @@ namespace src.Migrations
                         .HasColumnType("bigint");
 
                     b.ToTable("Notebooks");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 3L,
-                            DAquisicao = new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Descricao = "8 gb de ram, funciona, é da dell",
-                            NroPatrimonio = 1002L
-                        });
                 });
 
             modelBuilder.Entity("src.Domain.Model.Sala", b =>
@@ -199,15 +154,6 @@ namespace src.Migrations
                         .HasColumnType("bit");
 
                     b.ToTable("Sala", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Lugares = 30,
-                            Numero = 104,
-                            TemProjetor = true
-                        });
                 });
 
             modelBuilder.Entity("FuncionarioRecurso", b =>
