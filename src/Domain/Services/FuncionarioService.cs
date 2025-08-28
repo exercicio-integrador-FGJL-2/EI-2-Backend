@@ -15,6 +15,10 @@ namespace src.Domain.Services
         public async Task<IEnumerable<FuncionarioDto>> GetAllFuncionarios()
         {
             var funcionarios = await _funcionarioRepository.GetAllAsync();
+            if (funcionarios == null)
+            {
+                return [];
+            }
             return funcionarios.Select(x => new FuncionarioDto(x.Matricula, x.Nome));
         }
     }

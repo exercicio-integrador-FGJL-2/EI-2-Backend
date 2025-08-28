@@ -6,10 +6,10 @@ namespace src.Domain.Model
     public class Notebook : Recurso
     {
         // Data de aquisicao do notebook
-        public required long NroPatrimonio { get; set; }
-        public required DateTime DAquisicao { get; set; }
+        public  long NroPatrimonio { get; set; }
+        public  DateTime DAquisicao { get; set; }
         [MaxLength(200)]
-        public required string Descricao { get; set; } 
+        public  string? Descricao { get; set; } 
         
     }
 }

@@ -7,10 +7,10 @@ namespace src.Domain.Model
     public class Laboratorio : Recurso
     {
         [MaxLength(100)]
-        public required string Nome { get; set; }
+        public  string? Nome { get; set; }
         // Quantos computadores esse laboratorio possui.
-        public required int QComp { get; set; }      
+        public  int QComp { get; set; }      
         [MaxLength(200)]
-        public required string Descricao { get; set; }
+        public  string? Descricao { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace src.Persistence.Repositories
             _empresaContext = empresaContext;
         }
 
+       
         public async Task AlocarAsync(RecursoFuncionario recursoFuncionario)
         {
             await _empresaContext.RecursoFuncionarios.AddAsync(recursoFuncionario);
