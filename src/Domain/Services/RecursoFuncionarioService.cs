@@ -18,22 +18,44 @@ namespace src.Domain.Services
             _recursoFuncionarioRepo = recursoFuncionarioRepository;
             _decide = decide;
         }
-        public async Task AlocarRecurso(RecursoFuncionarioDto rfDto)
+        public async Task<RecursoFuncionarioDto?> AlocarRecurso(RecursoFuncionarioDto rfDto)
         {
-            var funcionario = new Funcionario { Id = rfDto.IdFuncionario };
-            var rec = _decide.DecideTipo(rfDto.TipoRecursoDto);
-            rec.Id = rfDto.IdRecurso;
-
-            await _recursoFuncionarioRepo.AlocarAsync(new RecursoFuncionario { FuncionarioId= funcionario.Id , RecursoId = rec.Id, DataDeAlocacao = rfDto.Data });
+            RecursoFuncionario rf = new RecursoFuncionario { FuncionarioId = rfDto.IdFuncionario, RecursoId = rfDto.IdRecurso, DataDeAlocacao = rfDto.Data };
+            Recurso? tipo = _decide.DecideTipo(rfDto.TipoRecursoDto);
+            if (await _recursoFuncionarioRepo.FoiAlocado(rf))
+            {
+                return null;
+            }
+            var alocacoesDoDia = await  _recursoFuncionarioRepo.AlocadosNoDia(rf);
+            if (alocacoesDoDia.Any())
+            {
+                if (alocacoesDoDia.Select(al => al.Recurso!.GetType() == tipo.GetType()).Any())
+                {
+                    return null;
+                }
+                if (rfDto.TipoRecursoDto == TipoRecursoDto.Laboratorio && alocacoesDoDia.Select(al => al.Recurso!.GetType() == new Sala().GetType()).Any())
+                {
+                    return null;
+                }
+                if (rfDto.TipoRecursoDto == TipoRecursoDto.Sala && alocacoesDoDia.Select(al => al.Recurso!.GetType() == new Laboratorio().GetType()).Any())
+                {
+                    return null;
+                }
+                
+            }
+            var response = await _recursoFuncionarioRepo.AlocarAsync(rf);
+            return new RecursoFuncionarioDto(response.FuncionarioId, response.RecursoId, response.DataDeAlocacao.Date, response.Recurso switch
+            {
+                Sala => TipoRecursoDto.Sala,
+                Notebook => TipoRecursoDto.Notebook,
+                Laboratorio => TipoRecursoDto.Laboratorio,
+                _ => throw new NullReferenceException()
+            });
         }
 
         public async Task<IEnumerable<RecursoFuncionarioDto>> GetAll()
         {
-            var rfs = await _recursoFuncionarioRepo.GetAllGroupedByDateAsync();
-            if (rfs == null)
-            {
-                throw new NullReferenceException("Lista esta vazia.");
-            }
+            var rfs = await _recursoFuncionarioRepo.GetAllGroupedByDateAsync() ?? throw new NullReferenceException("Lista esta vazia.");
             var listaConvertida = rfs.Select(rf => new RecursoFuncionarioDto(
                 rf.FuncionarioId,
                 rf.RecursoId,

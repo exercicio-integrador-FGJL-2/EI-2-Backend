@@ -8,8 +8,9 @@ namespace src.Persistence.Repositories.Interfaces
         Task<List<RecursoFuncionario>> GetAllGroupedByDateAsync(); //group by date
         Task<int> GetAlocacoesPorRecurso(Recurso r);
         Task<List<RecursoFuncionario>> GetByDateAsync(DateTime start, DateTime end);
-        Task AlocarAsync(RecursoFuncionario recursoFuncionario);
+        Task<RecursoFuncionario> AlocarAsync(RecursoFuncionario recursoFuncionario);
 
-
+        Task<bool> FoiAlocado(RecursoFuncionario recurso);
+        Task<IEnumerable<RecursoFuncionario>> AlocadosNoDia(RecursoFuncionario rf);
     }
 }

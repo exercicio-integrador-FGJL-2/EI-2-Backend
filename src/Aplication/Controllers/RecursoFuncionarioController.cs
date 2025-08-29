@@ -16,8 +16,12 @@ namespace src.Application.Controllers
         [HttpPost("alocar")]
         public async Task<IActionResult> Alocar([FromBody] RecursoFuncionarioDto rfDto)
         {
-            await _recursoFuncionarioService.AlocarRecurso(rfDto);
-            return Ok();
+            var retorno = await _recursoFuncionarioService.AlocarRecurso(rfDto);
+            if (retorno == null)
+            {
+                return Conflict(retorno);
+            }
+            return Ok(retorno);
         }
 
         [HttpGet("all")]

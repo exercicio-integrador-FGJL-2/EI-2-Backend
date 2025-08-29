@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using src.Application.Dtos;
 using src.Domain.Model;
 using src.Domain.Model.Interface;
 using src.Persistence.Repositories.Interfaces;
@@ -13,12 +14,26 @@ namespace src.Persistence.Repositories
             _empresaContext = empresaContext;
         }
 
-       
-        public async Task AlocarAsync(RecursoFuncionario recursoFuncionario)
+        public async Task<IEnumerable<RecursoFuncionario>> AlocadosNoDia(RecursoFuncionario rfEntrada)
+        {
+            return await _empresaContext.RecursoFuncionarios.Where(rf => rf.FuncionarioId == rfEntrada.FuncionarioId && rf.DataDeAlocacao.Date == rfEntrada.DataDeAlocacao.Date).ToListAsync();
+            
+        }
+
+        public async Task<RecursoFuncionario> AlocarAsync(RecursoFuncionario recursoFuncionario)
         {
             await _empresaContext.RecursoFuncionarios.AddAsync(recursoFuncionario);
             await _empresaContext.SaveChangesAsync();
+            return recursoFuncionario;
         }
+
+        public async Task<bool> FoiAlocado(RecursoFuncionario recurso)
+        {
+            bool alocado = await _empresaContext.RecursoFuncionarios.Select(rf => rf.DataDeAlocacao.Date == recurso.DataDeAlocacao.Date).AnyAsync();
+            System.Console.WriteLine("foi alocado: " + alocado);
+            return alocado;
+        }
+
         public async Task<List<RecursoFuncionario>> GetAllGroupedByDateAsync()
         {
 
