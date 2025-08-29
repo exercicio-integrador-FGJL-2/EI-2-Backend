@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using src.Application.Dtos;
 using src.Domain.Auxiliar.Interface;
 using src.Domain.Model;
-using src.Domain.Model.Interface;
 using src.Domain.Services.Interface;
 using src.Persistence.Repositories.Interfaces;
 
@@ -48,10 +46,15 @@ namespace src.Domain.Services
             return listaConvertida;
         }
 
-        public async Task<int> GetAlocoesPorRecurso(RecursoDto recursoDto)
+        public async Task<int> GetAlocoesPorRecurso(TipoRecursoDto tipoDto)
         {
-            var tipo = _decide.DecideTipo(recursoDto.TipoRecursoDto);
-            return await _recursoFuncionarioRepo.GetAlocacoesPorRecurso(tipo);
+            return await _recursoFuncionarioRepo.GetAlocacoesPorRecurso(tipoDto switch
+            {
+                TipoRecursoDto.Sala => new Sala(),
+                TipoRecursoDto.Laboratorio => new Laboratorio(),
+                TipoRecursoDto.Notebook => new Notebook(),
+                _ => throw new Exception()
+            });
         }
 
         public async Task<IEnumerable<RecursoFuncionarioDto>> GetByDate(DateTime start, DateTime end)

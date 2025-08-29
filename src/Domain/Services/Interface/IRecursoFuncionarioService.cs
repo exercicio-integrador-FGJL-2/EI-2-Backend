@@ -7,7 +7,7 @@ namespace src.Domain.Services.Interface
     {
         Task AlocarRecurso(RecursoFuncionarioDto rfDto);
         Task<IEnumerable<RecursoFuncionarioDto>> GetAll();
-        Task<int> GetAlocoesPorRecurso(RecursoDto recursoDto);
+        Task<int> GetAlocoesPorRecurso(TipoRecursoDto tipoDto);
         Task<IEnumerable<RecursoFuncionarioDto>> GetByDate(DateTime start, DateTime end);
     }
 }

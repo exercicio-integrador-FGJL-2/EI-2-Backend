@@ -32,7 +32,7 @@ namespace src.Application.Controllers
         }
 
         [HttpGet("byRecurso")]
-        public async Task<IActionResult> GetPorRecurso([FromBody] RecursoDto dto)
+        public async Task<IActionResult> GetPorRecurso(TipoRecursoDto dto)
         {
             var total = await _recursoFuncionarioService.GetAlocoesPorRecurso(dto);
             return Ok(total);
